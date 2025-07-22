@@ -1,6 +1,6 @@
-# WallpaperLogic
+# Philosophers-Stone
 
-WallpaperLogic is a dynamic and extensible wallpaper and video background manager for Linux and macOS. It supports both static images and looping videos as wallpapers using lightweight Bash scripts and a configuration-based design.
+Philosophers-Stone is a dynamic and extensible wallpaper and video background manager for Linux and macOS. It supports both static images and looping videos as wallpapers using lightweight Bash scripts and a configuration-based design.
 
 ## 🚀 Features
 
@@ -25,16 +25,16 @@ Install the following dependencies for full functionality:
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/yourusername/wallpaperlogic.git
-cd wallpaperlogic
+git clone https://github.com/yourusername/Philosophers-Stone.git
+cd Philosophers-Stone
 ```
 
 ### 2. Edit the Configuration
 
-Open `wallpaperlogic.conf`:
+Open `philosophers-stone.conf`:
 
 ```bash
-nano wallpaperlogic.conf
+nano philosophers-stone.conf
 ```
 
 And set the following variables:
@@ -89,4 +89,4 @@ Pull requests, bug reports, and suggestions are welcome! Please open an issue or
 
 ---
 
-Created with ❤️ for free desktop environments.
+Created with ❤️
