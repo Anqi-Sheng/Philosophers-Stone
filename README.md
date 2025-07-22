@@ -7,7 +7,7 @@ Philosophers-Stone is a dynamic and extensible wallpaper and video background ma
 - Randomly change wallpapers or videos from specified directories
 - Caches wallpaper/video lists for faster access
 - Tmux integration for persistent background processes
-- Configurable with simple `.conf` files
+- Configurable with simple `.conf` file
 - Works across popular Linux distributions and macOS
 
 ## 📦 Dependencies
