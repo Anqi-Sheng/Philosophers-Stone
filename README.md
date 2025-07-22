@@ -68,11 +68,11 @@ chmod +x run_wallpaper.sh
 
 | Distro   | Install Command |
 |----------|------------------|
-| **Arch** | `sudo pacman -S feh mpv tmux` |
-| **Debian/Ubuntu** | `sudo apt install feh mpv tmux` |
-| **Fedora** | `sudo dnf install feh mpv tmux` |
+| **Arch** | `sudo pacman -S swww mpv mpvpaper tmux` |
+| **Debian/Ubuntu** | `sudo apt install swww mpv mpvpaper tmux` |
+| **Fedora** | `sudo dnf install swww mpv mpvpaper tmux` |
 | **NixOS** | Add to `environment.systemPackages` |
-| **Gentoo** | `emerge --ask feh mpv tmux` |
+| **Gentoo** | `emerge --ask swww mpv mpvpaper tmux` |
 
 ### 🍏 macOS
 
