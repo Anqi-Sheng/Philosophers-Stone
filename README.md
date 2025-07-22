@@ -1,6 +1,6 @@
 # Philosophers-Stone
 
-Philosophers-Stone is a dynamic and extensible wallpaper and video background manager for Linux and macOS. It supports both static images and looping videos as wallpapers using lightweight Bash scripts and a configuration-based design.
+Philosophers-Stone is a dynamic wallpaper and video background randomizer for Linux and macOS. It supports both static images and looping videos as wallpapers using lightweight Bash scripts and a configuration-based design.
 
 ## 🚀 Features
 
