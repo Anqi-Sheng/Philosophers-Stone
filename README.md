@@ -18,7 +18,7 @@ Install the following dependencies for full functionality:
 - `feh` - image background setter (Linux)
 - `mpv` - video player
 - `mpvpaper` - video wallpaper
-- `bash`, `find`, `coreutils`, `xdotool` (for automation logic)
+- `bash`, `find`, `coreutils` (for automation logic)
 - macOS: `brew install tmux mpv feh coreutils`
 
 ## 🛠️ Setup
