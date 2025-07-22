@@ -15,11 +15,11 @@ Philosophers-Stone is a dynamic wallpaper and video background randomizer for Li
 Install the following dependencies for full functionality:
 
 - `tmux` - for detached wallpaper changing sessions
-- `feh` - image background setter (Linux)
+- `swww` - image background setter (Linux)
 - `mpv` - video player
 - `mpvpaper` - video wallpaper
 - `bash`, `find`, `coreutils` (for automation logic)
-- macOS: `brew install tmux mpv mpvpaper feh coreutils`
+- macOS: `brew install tmux mpv mpvpaper swww coreutils`
 
 ## 🛠️ Setup
 
