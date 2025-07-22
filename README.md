@@ -19,7 +19,7 @@ Install the following dependencies for full functionality:
 - `mpv` - video player
 - `mpvpaper` - video wallpaper
 - `bash`, `find`, `coreutils` (for automation logic)
-- macOS: `brew install tmux mpv feh coreutils`
+- macOS: `brew install tmux mpv mpvpaper feh coreutils`
 
 ## 🛠️ Setup
 
