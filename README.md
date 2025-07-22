@@ -16,7 +16,8 @@ Install the following dependencies for full functionality:
 
 - `tmux` - for detached wallpaper changing sessions
 - `feh` - image background setter (Linux)
-- `mpv` - video wallpaper player
+- `mpv` - video player
+- `mpvpaper` - video wallpaper
 - `bash`, `find`, `coreutils`, `xdotool` (for automation logic)
 - macOS: `brew install tmux mpv feh coreutils`
 
