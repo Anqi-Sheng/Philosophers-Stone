@@ -42,7 +42,7 @@ And set the following variables:
 ```bash
 WALLPAPER_DIR="$HOME/Pictures/Wallpapers"
 VIDPAPER_DIR="$HOME/Videos/WallpaperVids"
-MODE="image"        # or "video"
+MODE="image"        # or "video"  # or "random"
 LOCKFILE="/tmp/random_wallpaper.lock"
 CACHE_FILE="/tmp/wallpaper_list.txt"
 ```
