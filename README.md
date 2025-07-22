@@ -41,8 +41,8 @@ nano philosophers-stone.conf
 And set the following variables:
 
 ```bash
-WALLPAPER_DIR="$HOME/Pictures/Wallpapers"
-VIDPAPER_DIR="$HOME/Videos/WallpaperVids"
+WALLPAPER_DIR="$HOME/Pictures/Directory/to/your/Wallpapers"
+VIDPAPER_DIR="$HOME/Videos/Directory/to/your/WallpaperVids"
 MODE="image"        # or "video"  # or "random"
 LOCKFILE="/tmp/random_wallpaper.lock"
 CACHE_FILE="/tmp/wallpaper_list.txt"
