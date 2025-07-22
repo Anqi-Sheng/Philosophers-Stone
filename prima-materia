@@ -194,7 +194,7 @@ while true; do
 
     echo "Hyprlock triggered" >> ~/hyprlock_test.txt
 
-    sleep 48 # Change this value to your desired interval in seconds
+    sleep "${SLEEP_INTERVAL:-48}"
 
     # Remove the lock file when done
     rm -f "$LOCKFILE"
