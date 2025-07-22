@@ -77,7 +77,7 @@ chmod +x run_wallpaper.sh
 ### 🍏 macOS
 
 ```bash
-brew install tmux mpv feh coreutils
+brew install tmux mpv mpvpaper swww coreutils
 ```
 
 ## 📜 License
