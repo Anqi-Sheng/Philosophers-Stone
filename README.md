@@ -24,6 +24,7 @@ Install the following dependencies for full functionality:
 - `mpv` – video player
 - `mpvpaper` – video wallpaper
 - `bash`, `find`, `coreutils` – for automation logic
+#### Optional:
 - `xdg-utils` – for desktop integration (optional, recommended)
 
 ### macOS:
