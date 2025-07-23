@@ -1,0 +1,225 @@
+#!/usr/bin/env bash
+
+#set -euo pipefail
+
+#Check if the HYPRLAND_INSTANCE_SIGNATURE is set
+if [ -z "$HYPRLAND_INSTANCE_SIGNATURE" ];
+then
+    echo "HYPRLAND_INSTANCE_SIGNATURE is not set."
+fi
+
+# Resolve script location for relative config
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+CONFIG_FILE="$SCRIPT_DIR/philosophers-stone.conf"
+
+# Use the value from .conf or fallback to 3 seconds
+FADE_DURATION="${FADE_DURATION:-3}"
+
+# Use the value from .conf or fallback
+FADE_TYPE="${FADE_TYPE:-grow}"
+
+# Use the value from .conf or fallback
+FPS="${FPS:-60}"
+
+# Use the value from .conf or fallback
+POS="${POS: -0.5,0.5}"
+
+# Load user config
+if [ -f "$CONFIG_FILE" ]; then
+    source "$CONFIG_FILE"
+else
+    echo "Missing config: $CONFIG_FILE"
+    echo "Please create it with WALLPAPER_DIR and other variables"
+    exit 1
+fi
+
+# Check required config vars
+if [ -z "${WALLPAPER_DIR:-}" ]; then
+    echo "WALLPAPER_DIR not set in config"
+    exit 1
+fi
+
+# Use defaults if not defined in config
+LOCKFILE="${LOCKFILE:-/tmp/random_wallpaper.lock}"
+CACHE_FILE="${CACHE_FILE:-/tmp/wallpaper_list.txt}"
+CACHE_DIR="$(dirname "$CACHE_FILE")"
+#VIDCACHE_FILE="${CACHE_FILE:-/tmp/vidpaper_list.txt}"
+#VIDCACHE_DIR="$(dirname "$VIDCACHE_FILE")"
+
+# Create the temporary directory if it doesn't exist
+mkdir -p "$CACHE_DIR"
+
+# Create the temporary directory if it doesn't exist
+#mkdir -p "$VIDCACHE_DIR"
+
+if [ -e "$LOCKFILE" ]; then
+    echo "Script is already running."
+    exit 1
+fi
+
+#create a lock file
+touch "$LOCKFILE"
+
+# Infinite loop to run the command every 30 seconds
+while true; do
+    # Flag file to indicate if the command has been run
+    flag_file="/tmp/swww_init_done"
+
+    # Check if the flag file exists
+    if [ ! -f "$flag_file" ];then
+        # Run the command
+        swww init
+
+        # Create the flag file to indicate the command has been run
+        touch "$flag_file"
+    else
+        echo "The command 'swww init' has already been run."
+    fi
+
+    # Cache the list of wallpapers if it doesn't exist
+    if [ ! -f "$CACHE_FILE" ]; then
+        echo "Creating wallpaper list cache..."
+        if find "$WALLPAPER_DIR" -type f >> "$CACHE_FILE"; then
+            echo "Cache created successfully."
+        else
+            echo "Failed to create cache."
+        fi
+    else
+        echo "Cache file already exists."
+    fi
+
+    # Check if the cache file is empty
+    if [ ! -s "$CACHE_FILE" ]; then
+        echo "Cache file is empty. Recreating..."
+        find "$WALLPAPER_DIR" -type f >> "$CACHE_FILE"
+    fi
+
+    # Similarly, cache the list of videos if it doesn't exist
+#if [ ! -f "$VIDCACHE_FILE" ]; then
+#    echo "Creating video list cache..."
+#    if find "$VIDPAPER_DIR" -type f >> "$VIDCACHE_FILE"; then
+#        echo "Video cache created successfully."
+#    else
+#        echo "Failed to create video cache."
+#    fi
+#else
+#    echo "Video cache file already exists."
+#fi
+
+# Check if the video cache file is empty
+#if [ ! -s "$VIDCACHE_FILE" ]; then
+#    echo "Video cache file is empty. Recreating..."
+#    find "$VIDPAPER_DIR" -type f >> "$VIDCACHE_FILE"
+#fi
+
+    # --- Mode logic for image, video, or random ---
+
+    MODE="${MODE:-image}"
+
+    if [[ "$MODE" == "random" ]]; then
+        if (( RANDOM % 2 )); then
+            MODE="video"
+        else
+            MODE="image"
+        fi
+    fi
+
+    if [[ "$MODE" == "video" ]]; then
+        if [ -z "${VIDPAPER_DIR:-}" ]; then
+            echo "VIDPAPER_DIR is not set in config, cannot use video mode."
+            exit 1
+        fi
+
+        RANDOM_VIDPAPER=$(shuf -n 1 "$VIDCACHE_FILE")
+        echo "Selected video wallpaper: $RANDOM_VIDPAPER" >> ~/wallpaper_log.txt 2>&1
+
+        if [ -z "$RANDOM_VIDPAPER" ]; then
+            echo "No video wallpapers found in $VIDPAPER_DIR"
+            exit 1
+        fi
+
+        # Set video wallpaper using mpvpaper
+        mpvpaper -vv -p -s -f -o "no-audio" all "$RANDOM_VIDPAPER" &
+
+        # Notify Pywal to generate palette from video wallpaper (optional)
+        wal --backend wal -i "$RANDOM_VIDPAPER"
+        wal --backend wal --theme "$RANDOM_VIDPAPER"
+
+    else
+        # Image wallpaper mode
+
+        RANDOM_WALLPAPER=$(shuf -n 1 "$CACHE_FILE")
+
+        echo "Selected wallpaper: $RANDOM_WALLPAPER" >> ~/wallpaper_log.txt 2>&1
+
+        if [ -z "$RANDOM_WALLPAPER" ]; then
+            echo "No wallpapers found in $WALLPAPER_DIR"
+            exit 1
+        fi
+
+        # Set wallpaper using swww (--transition-type options any, wipe, grow, slide, outer)
+#        if command -v swww &>/dev/null; then
+        swww img "$RANDOM_WALLPAPER" \
+        --transition-type "$FADE_TYPE" \
+        --transition-duration "$FADE_DURATION" \
+        --transition-fps "$FPS" \
+       #--transition-pos "$POS"
+       #--transition-pos 0.5,0.5
+   #     #else
+#    feh --bg-scale "$RANDOM_WALLPAPER"  # fallback for X11
+#fi
+#fi
+
+        # Notify Pywal to generate color palette from image wallpaper
+        wal --backend wal -i "$RANDOM_WALLPAPER"
+        wal --backend wal --theme "$RANDOM_WALLPAPER"
+    fi
+
+    # Optionally, source the colors for the current session
+    if [ -f ~/.cache/wal/colors.sh ]; then
+        source ~/.cache/wal/colors.sh
+    fi
+
+    # Apply pywal colors to GTK applications
+    if [ -f ~/.cache/wal/colors-gtk.sh ]; then
+        source ~/.cache/wal/colors-gtk.sh
+    fi
+
+    # Apply pywal colors to Qt applications
+    if [ -f ~/.cache/wal/colors-qt.sh ]; then
+        source ~/.cache/wal/colors-qt.sh
+    fi
+
+    # Apply pywal colors to tty applications
+    if [ -f ~/.cache/wal/colors-tty.sh ]; then
+        source ~/.cache/wal/colors-tty.sh
+    fi
+
+    # Update Hyprland border colors
+    if [ -f ~/.cache/wal/colors.json ]; then
+        BORDER_COLOR=$(jq -r '.colors[2]' ~/.cache/wal/colors.json)
+        ACTIVE_BORDER_COLOR=$(jq -r '.colors[3]' ~/.cache/wal/colors.json)
+    # Uncomment and modify these lines if you want to update Hyprland borders dynamically if it works lol
+        # hyprctl dispatch col.inactive_border "$BORDER_COLOR"
+        # hyprctl dispatch col.active_border "$ACTIVE_BORDER_COLOR"
+    fi
+
+    # ───────────────────────────────────────────────────────────
+    env > ~/env_variables.txt
+
+    # Log the selected wallpaper or video
+    if [[ "$MODE" == "video" ]]; then
+        echo "Setting video wallpaper: $RANDOM_VIDPAPER" >> ~/vidpaper_log.txt 2>&1
+    else
+        echo "Setting wallpaper: $RANDOM_WALLPAPER" >> ~/wallpaper_log.txt 2>&1
+    fi
+
+    echo "Hyprlock triggered" >> ~/hyprlock_test.txt
+
+    sleep "${SLEEP_INTERVAL:-48}" # Change this value to your desired interval in seconds
+
+    # Remove the lock file when done
+    rm -f "$LOCKFILE"
+done
+## ────────────────────────────────────────────────────────────────── ##
+    #                                                              #

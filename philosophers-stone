@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Start a new detached tmux session named 'wallpaper'
+/usr/bin/tmux new-session -d -s wallpaper
+
+#/usr/bin/tmux new-session -d -s wallpaper "$SHELL" -c "cd '$SCRIPT_DIR' && ./wallpaperlogic.sh"
+sleep 0.05
+# Send the command to run the random_wallpaper.sh script in the tmux session
+/usr/bin/tmux send-keys -t wallpaper "cd '$SCRIPT_DIR' && ./prima-materia" C-m
+
+## ────────────────────────────────────────────────────────────────── ##
+    #             Made with Love                                   #
